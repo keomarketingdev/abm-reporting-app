@@ -310,8 +310,17 @@ def inject_custom_css(theme="light"):
             padding: 12px 16px 0 16px !important;
         }}
 
+        [data-testid="stSidebar"] .stImage img {{
+            border-radius: 0 !important;
+        }}
+
         [data-testid="stSidebar"] [data-testid="stImageToolbar"] {{
             display: none !important;
+        }}
+
+        .sidebar-logo img {{
+            border-radius: 0 !important;
+            width: 250px;
         }}
 
         /* Navigation header */
@@ -929,9 +938,14 @@ def main():
 
     # Sidebar
     with st.sidebar:
-        st.image("keo-white-log.png", width=250)
+        import base64, pathlib
+        _logo_b64 = base64.b64encode(pathlib.Path("keo-white-log.png").read_bytes()).decode()
+        st.markdown(
+            f'<div class="sidebar-logo"><a href="https://keomarketing.com/" target="_blank">'
+            f'<img src="data:image/png;base64,{_logo_b64}" width="250"></a></div>',
+            unsafe_allow_html=True,
+        )
 
-        st.header("Navigation")
         st.markdown('<div style="margin-bottom: 8px;"></div>', unsafe_allow_html=True)
 
         if 'page' not in st.session_state:
